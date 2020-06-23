@@ -96,9 +96,15 @@ public class App
         httpGet.addHeader("content-type", "application/json");
         HttpResponse response;
 		try {
-			CloseableHttpClient client = HttpClients.createDefault();
-			response = client.execute(httpGet);
 			
+			//CloseableHttpClient client = HttpClients.createDefault();
+			//response = client.execute(httpGet);
+			
+			BasicHttpClientConnectionManager connManager = new BasicHttpClientConnectionManager();
+			//HttpRoute route = new HttpRoute(new HttpHost("www.baeldung.com", 80));
+			//ConnectionRequest connRequest = connManager.requestConnection(route, null);
+			CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connManager).build();
+			response = httpClient.execute(httpGet);
 			StatusLine sl = response.getStatusLine();
 	        System.out.println("Response from echo service : "+sl.getStatusCode() +" - "+sl.getReasonPhrase());
 		} catch (Exception e) {
